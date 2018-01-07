@@ -1,0 +1,62 @@
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+.nav-link {
+  color: #fff;
+}
+
+.navbar {
+  background-color: transparent;
+
+  .navbar-toggler {
+    z-index: 1000;
+  }
+
+  &.navbar-inverse .navbar-nav .nav-link {
+    color: #eee;
+  }
+
+  .nav-link {
+    padding: 0;
+  }
+
+  .navbar-toggler-icon {
+    transition: transform .3s linear;
+  }
+
+  .navbar-toggler[aria-expanded=true] {
+    .navbar-toggler-icon {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .navbar-toggler[aria-expanded=false] {
+    .navbar-toggler-icon {
+      transform: rotate(0deg);
+    }
+  }
+
+  .navbar-collapse[aria-expanded=true] {
+    .navbar-nav {
+      margin-top: 10px;
+
+      li {
+        margin-bottom: 6px;
+        padding: 0.6rem;
+        border: 1px solid #eee;
+        border-radius: 5px;
+
+        &, a {
+          line-height: 2;
+        }
+      }
+    }
+
+    .m-sns {
+      a {
+        width: 3rem;
+        height: 2rem;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

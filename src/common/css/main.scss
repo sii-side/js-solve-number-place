@@ -1,0 +1,24 @@
+table {
+  border-collapse: collapse;
+  border: 2px solid;
+
+  colgroup {
+    border-right: 2px solid;
+  }
+
+  tr:nth-child(3n) {
+    border-bottom: 2px solid
+  }
+
+  td {
+    width: 40px;
+    height: 40px;
+    border: 1px solid;
+    line-height: 30px;
+    text-align: center;
+  }
+
+  .prepare {
+    background-color: #ccc;
+  }
+}
