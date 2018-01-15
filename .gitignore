@@ -1,3 +1,5 @@
 node_modules/
 .vs/
-src/psd/pura_free_agency-assets
+.nyc_output/
+coverage/
+test/

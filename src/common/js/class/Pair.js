@@ -1,36 +1,43 @@
+import Cells from './Cells'
+
 export default class Pair {
-  constructor (cell1, cell2) {
-    this.cell1 = cell1
-    this.cell2 = cell2
-    this.isSameColumn = cell1.index.column === cell2.index.column
-    this.isSameRow = cell1.index.row === cell2.index.row
+  constructor (...cells) {
+    this.cells = new Cells(cells)
   }
 
-  check () {
-    if (this.checkSpecial()) {
-      if (this.isSameColumn) {
-        this.cell1.getColumn().cells.filter(this.cell1, this.cell2).forEach(cell => {
-          cell.narrow(...this.cell1.possibility.list)
-        })
-      }
-      if (this.isSameRow) {
-        this.cell1.getRow().cells.filter(this.cell1, this.cell2).forEach(cell => {
-          cell.narrow(...this.cell1.possibility.list)
-        })
-      }
-      this.cell1.getBlock().cells.filter(this.cell1, this.cell2).forEach(cell => {
-        cell.narrow(...this.cell1.possibility.list)
-      })
-    }
+  isSpecifiedEither () {
+    return this.cells.cell(0).number > 0 || this.cells.cell(1).number > 0
   }
 
-  checkSpecial () {
-    if (
-      this.cell1.possibility.compare(this.cell2.possibility) &&
-      this.cell1.possibility.getLength() === 2
-    ) {
+  isSpecial () {
+    const possibilities = this.cells.allCells().map(cell => cell.possibility)
+    if (possibilities[0].compare(possibilities[1]) && possibilities[0].length === 2) {
       return true
     }
     return false
+  }
+
+  solve () {
+    if (this.isSpecial()) {
+      this.solveSpecial()
+    }
+  }
+
+  solveSpecial () {
+    if (this.cells.isSameBlock()) {
+      this.narrow(this.cells.cell(0).block())
+    }
+    if (this.cells.isSameRow()) {
+      this.narrow(this.cells.cell(0).row())
+    }
+    if (this.cells.isSameColumn()) {
+      this.narrow(this.cells.cell(0).column())
+    }
+  }
+
+  narrow (region) {
+    const filteredCells = region.cells.filterByExcludeCells(...this.cells.allCells())
+    const possibility = this.cells.cell(0).possibility.numbers()
+    filteredCells.narrow(...possibility)
   }
 }

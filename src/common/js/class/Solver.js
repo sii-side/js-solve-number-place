@@ -5,18 +5,15 @@ export default class Solver {
 
   solve () {
     do {
-      this.table.cells.reset()
-      this.checkTableOnce()
+      if (this.table.cells.countError() > 0) {
+        console.log('There was an error.')
+        break
+      }
+      this.table.solve()
     } while (this.table.cells.countChanged() > 0)
 
     if (this.table.cells.countEmpty() > 0) {
-      console.log('can\'t solved.')
+      console.log('couldn\'t solve.')
     }
-  }
-
-  checkTableOnce () {
-    this.table.rows.check()
-    this.table.columns.check()
-    this.table.blocks.check()
   }
 }

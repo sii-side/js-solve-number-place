@@ -11,13 +11,18 @@ export default class Columns {
     })
   }
 
+  column (index) {
+    return this.all[index]
+  }
+
   getColumnCells (cells, columnIndex) {
     return cells.filter(cell => cell.index.column === columnIndex)
   }
 
-  check () {
+  solve () {
     this.all.forEach(column => {
-      column.cells.check()
+      column.validate()
+      column.solve()
     })
   }
 }

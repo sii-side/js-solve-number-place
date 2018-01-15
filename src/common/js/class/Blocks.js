@@ -17,6 +17,10 @@ export default class Blocks {
     return blockCells.map((cells, index) => new Block(cells, index))
   }
 
+  block (index) {
+    return this.all[index]
+  }
+
   createRows () {
     return [
       new BlockRow(this.all.slice(0, 3), 0),
@@ -33,16 +37,16 @@ export default class Blocks {
     ]
   }
 
-  check () {
+  solve () {
     this.all.forEach(block => {
-      block.cells.check()
-      block.check()
+      block.validate()
+      block.solve()
     })
     this.rows.forEach(blockRow => {
-      blockRow.check()
+      blockRow.solve()
     })
     this.columns.forEach(blockColumn => {
-      blockColumn.check()
+      blockColumn.solve()
     })
   }
 }

@@ -1,26 +1,21 @@
 export default class Cells {
   constructor (cells) {
     this.all = cells
+    this.length = cells.length
   }
 
-  getLength () {
-    return this.all.length
+  allCells () {
+    return this.all
   }
 
-  getCell (index) {
+  cell (index) {
     return this.all[index]
   }
 
-  countChanged () {
-    return this.all.filter(cell => cell.isChanged).length
-  }
-
-  countEmpty () {
-    return this.all.filter(cell => cell.number === 0).length
-  }
-
-  getEmpty () {
-    return this.all.filter(cell => cell.number === 0)
+  error () {
+    this.all.forEach(cell => {
+      cell.flag.error()
+    })
   }
 
   reset () {
@@ -29,45 +24,61 @@ export default class Cells {
     })
   }
 
-  filter (...excludeCells) {
-    return this.getEmpty().filter(cell => excludeCells.indexOf(cell) === -1)
+  countChanged () {
+    return this.all.filter(cell => cell.flag.isChanged).length
+  }
+
+  countEmpty () {
+    return this.all.filter(cell => cell.number === 0).length
+  }
+
+  countError () {
+    return this.all.filter(cell => cell.flag.isError).length
+  }
+
+  filterByEmpty () {
+    return new Cells(this.all.filter(cell => cell.number === 0))
+  }
+
+  filterByExcludeCells (...excludeCells) {
+    return new Cells(this.all.filter(cell => !excludeCells.includes(cell)))
   }
 
   filterByCellNumber (number) {
-    return this.all.filter(cell => cell.number === number)
+    return new Cells(this.all.filter(cell => cell.number === number))
   }
 
   filterByPossibilityNumber (number) {
-    return this.all.filter(cell => cell.possibility.has(number))
+    return new Cells(this.all.filter(cell => cell.possibility.has(number)))
   }
 
-  checkOnSameColumn () {
-    return this.all.every(cell => cell.index.column === this.all[0].index.column)
+  isSameBlock () {
+    return this.all.every(cell => cell.index.block === this.all[0].index.block)
   }
 
-  checkOnSameRow () {
+  isSameRow () {
     return this.all.every(cell => cell.index.row === this.all[0].index.row)
   }
 
-  check () {
+  isSameColumn () {
+    return this.all.every(cell => cell.index.column === this.all[0].index.column)
+  }
+
+  isSameRegion () {
+    return this.isSameBlock() || this.isSameRow() || this.isSameColumn()
+  }
+
+  solve () {
     this.all.forEach(cell => {
-      cell.check(this)
+      if (!cell.solve() && this.isSameRegion()) {
+        this.narrow(cell.number)
+      }
     })
   }
 
   narrow (...numbers) {
-    this.getEmpty().forEach(cell => {
+    this.filterByEmpty().all.forEach(cell => {
       cell.narrow(...numbers)
     })
-  }
-
-  validate () {
-    let isValid = true
-    ;[1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(number => {
-      if (this.all.filter(cell => cell.number === number).length > 1) {
-        isValid = false
-      }
-    })
-    return isValid
   }
 }

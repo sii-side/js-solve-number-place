@@ -12936,11 +12936,16 @@ table td {
 	width: 40px;
 	height: 40px;
 	text-align: center;
-	border: 1px solid;
+	border: 1px solid #000;
 }
 
 table .prepare {
 	background-color: #ccc;
+}
+
+table .error {
+	color: #f33;
+	background-color: #fcc;
 }
 
 

@@ -13,12 +13,17 @@ table {
   td {
     width: 40px;
     height: 40px;
-    border: 1px solid;
+    border: 1px solid #000;
     line-height: 30px;
     text-align: center;
   }
 
   .prepare {
     background-color: #ccc;
+  }
+
+  .error {
+    color: #f33;
+    background-color: #fcc;
   }
 }

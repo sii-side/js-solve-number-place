@@ -1,15 +1,17 @@
+import NumberTable from './NumberTable'
 import Table from './Table'
 import Solver from './Solver'
 
 export default class NumberPlace {
   constructor (numberTable) {
-    this.table = new Table(numberTable)
+    this.numberTable = new NumberTable(numberTable)
+    this.table = new Table(this.numberTable)
+    this.solver = new Solver(this.table)
   }
 
   solve () {
     this.start()
-    const solver = new Solver(this.table)
-    solver.solve()
+    this.solver.solve()
     this.finish()
   }
 

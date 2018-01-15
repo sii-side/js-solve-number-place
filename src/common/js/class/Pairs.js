@@ -6,32 +6,34 @@ export default class Pairs {
   }
 
   create (cells) {
-    const pairs = []
-    const filteredCells = cells.all.filter(cell => cell.number === 0)
+    const filteredCells = cells.filterByEmpty()
     if (filteredCells.length === 0) {
-      return pairs
+      return []
     }
-    filteredCells.forEach((cell, index) => {
-      filteredCells.slice(index + 1).forEach(partner => {
+    return this.makePairs(filteredCells)
+  }
+
+  makePairs (filteredCells) {
+    const pairs = []
+    filteredCells.allCells().forEach((cell, index) => {
+      filteredCells.allCells().slice(index + 1).forEach(partner => {
         pairs.push(new Pair(cell, partner))
       })
     })
     return pairs
   }
 
-  clean () {
-    const newPairs = []
-    this.all.forEach(pair => {
-      if (pair.cell1.number === 0 && pair.cell2.number === 0) {
-        newPairs.push(pair)
-      }
-    })
-    this.all = newPairs
+  pair (index) {
+    return this.all[index]
   }
 
-  check () {
+  clean () {
+    this.all = this.all.filter(pair => !pair.isSpecifiedEither())
+  }
+
+  solve () {
     this.all.forEach(pair => {
-      pair.check()
+      pair.solve()
     })
     this.clean()
   }
